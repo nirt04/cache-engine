@@ -1,0 +1,26 @@
+{
+  "name": "cache-engine-db",
+  "version": "1.0.13",
+  "description": "CacheEngineDB is a utility for caching asynchronous function results using MongoDB. It helps reduce redundant computations by storing and retrieving cached results based on function arguments, providing efficient and consistent caching mechanisms.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "nodemon ./index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nirt04/cache-engine"
+  },
+  "author": "nirt04",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "nodemon": "^3.1.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "mongodb": "^6.6.2"
+  }
+}
