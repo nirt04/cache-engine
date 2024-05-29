@@ -1,6 +1,6 @@
 {
   "name": "cache-engine-db",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "CacheEngineDB is a utility for caching asynchronous function results using MongoDB. It helps reduce redundant computations by storing and retrieving cached results based on function arguments, providing efficient and consistent caching mechanisms.",
   "main": "dist/index.js",
   "scripts": {
