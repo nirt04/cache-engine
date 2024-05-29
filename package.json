@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "nodemon ./index.ts"
+    "dev": "nodemon ./index.ts",
+    "publish": "npm run build && npm publish"
   },
   "repository": {
     "type": "git",
