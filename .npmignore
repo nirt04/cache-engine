@@ -1,6 +1,8 @@
-src/
-node_modules/
-*.ts
-*.json
+# Ignore everything
+*
+
+# Except specific files
 !dist/index.js
 !dist/index.d.ts
+README.md
+LICENSE
