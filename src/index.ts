@@ -5,6 +5,12 @@ export interface ICacheEngineDBConnectOptions {
   dbName: string;
 }
 
+export enum FetchPolicy {
+  CacheAndNetwork = 'cache-and-network',
+  NetworkAndCache = 'network-and-cache',
+  NetworkOnly = 'network-only',
+}
+
 export class CacheEngineDB {
   private client?: MongoClient;
   private db?: Db;
@@ -63,10 +69,11 @@ export class CacheEngineDB {
     options: {
       id: string;
       fn: T;
+      fetchPolicy?: FetchPolicy;
     },
     ...args: Parameters<T>
   ): Promise<ReturnType<T>> {
-    const { id, fn } = options;
+    const { id, fn, fetchPolicy = FetchPolicy.CacheAndNetwork } = options;
     const key = `${id}_${JSON.stringify(args)}`;
 
     if (!this.db) {
@@ -74,15 +81,19 @@ export class CacheEngineDB {
     }
 
     try {
-      // Check if the result is already cached
-      const cached = await this.db.collection(this.cacheCollectionName).findOne({ key });
-      if (cached) {
-        return JSON.parse(cached.value);
+      if (fetchPolicy === FetchPolicy.CacheAndNetwork) {
+        // Check if the result is already cached
+        const cached = await this.db.collection(this.cacheCollectionName).findOne({ key });
+        if (cached) {
+          return JSON.parse(cached.value);
+        }
       }
 
       // Execute the function and cache the result
       const result = await fn(...args);
-      await this.db.collection(this.cacheCollectionName).insertOne({ key, value: JSON.stringify(result) });
+      if (fetchPolicy !== FetchPolicy.NetworkOnly) {
+        await this.db.collection(this.cacheCollectionName).insertOne({ key, value: JSON.stringify(result) });
+      }
       return result;
     } catch (error) {
       console.error('Error in cache method:', error);
